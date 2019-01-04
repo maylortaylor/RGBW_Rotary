@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 
-//**** BEGIN CONFIGURATION ******
+// **** CONFIGURATION ******
 
 #define NUM_LEDS 120
 #define DATA_PIN 6
@@ -67,7 +67,7 @@ float h, hTemp = 0;
 
 void setup()
 {
-  //Initialize Serial port
+  // * Initialize Serial port
   Serial.begin(115200);
 
   /***************************************************************************************
@@ -86,25 +86,22 @@ void setup()
   attachInterrupt(1, PinB, RISING); // set an interrupt on PinB, looking for a rising edge signal
                                     // and executing the "PinB" Interrupt Service Routine (below)
 
-  /***************************************************************************************
-  ***************************************************************************************/
-
-  // encoder button
+  // ? encoder button
   pinMode(4, INPUT);
   digitalWrite(4, HIGH);
-  // for lazy GRND problem solving
+  // ? for lazy GRND problem solving
   pinMode(5, OUTPUT);
   digitalWrite(5, LOW);
-  // encoder 1
+  // ? encoder 1
   pinMode(A0, OUTPUT);   // set Analog_0 to OUTPUT
   digitalWrite(A0, LOW); // set Analog_0 to LOW
-  // encoder 2
+  // ? encoder 2
   pinMode(A2, OUTPUT);    // set Analog_1 to OUTPUT
   digitalWrite(A2, HIGH); // set Analog_1 to HIGH
-  // brightness
+  // ? brightness
   pinMode(A1, INPUT); // set Analog_2 to INPUT
 
-  //Initiate LED pixel strip
+  // * Initiate LED pixel strip
   strip.setBrightness(255);
   strip.begin();
   strip.show();
@@ -112,13 +109,13 @@ void setup()
 
 void loop()
 {
-
-  //**** READ USER INPUTS ****
+  // **** READ USER INPUTS ****
   GetEncoderButtonValue();
-  //Read brightness wheel
+
+  // * Read brightness wheel
   tempValue = analogRead(brightnessKnob);
 
-  //filter noise
+  // * filter noise
   if ((tempValue > brightnessValue + 2) || (tempValue + 2 < brightnessValue))
   {
     //check minimum value - is 12 it?
@@ -131,7 +128,7 @@ void loop()
   CheckEncoderKnobLimits();
 
   TestCode();
-  //**** RUN SELECTED PATTERN ****
+
   CallColorFunction();
 }
 
@@ -175,18 +172,6 @@ void CallColorFunction()
   case 12:
     RainbowFlowSlow(.0001, .0014, .82, .38);
     break;
-    //  case 13:
-    //   // LargeGroupColorFlowBounce(12, .0001, .3, .9, .5); // ??
-    //   RainbowFlowSlow(.001, .0014, .82, .38);
-    //   break;
-    //  case 14:
-    //   RedWhite_Waves();// ----
-    //   break;
-    //  case 15:
-    //   RainbowFlowSlow(.001, .0014, .82, .38);
-    //   break;
   }
   strip.show();
 }
-
-//**** END MAIN LOOP ****
